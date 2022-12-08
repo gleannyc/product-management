@@ -7,7 +7,6 @@ from gql.transport.aiohttp import AIOHTTPTransport
 # TODO add check for one value each of impact, confidence, effort
 # if incomplete or multiple, set to triage
 
-TOKEN = ""
 
 def check_for_feedback_label(issue: dict):
     label_names = [node["name"] for node in issue["labels"]["nodes"]]
@@ -64,12 +63,21 @@ def parse_issue_rice(issue: dict):
 
 
 def main():
+
+    token = os.getenv("LINEAR_API_TOKEN")
+
+    if token is None:
+        print(
+            "\n\tEnvironmental variable LINEAR_API_TOKEN must be set with a Linear API developer token\n\n\tGo to https://linear.app/glean/settings/api to generate a token.\n"
+        )
+        return
+
     base = "https://api.linear.app/graphql"
     product_team_id = "402d0370-296a-4cfe-86d8-c1cf60dc420d"
 
     transport = AIOHTTPTransport(
         url=base,
-        headers={"Authorization": TOKEN},
+        headers={"Authorization": token},
     )
 
     client = Client(transport=transport, fetch_schema_from_transport=True)

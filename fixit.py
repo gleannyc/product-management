@@ -106,6 +106,8 @@ def print_current_totals(issues):
         df[df["state"] == "Done"]
         .groupby("assignee", as_index=False)["fixit_score"]
         .sum()
+        .rename(columns=dict(fixit_score='fixit_score_total'))
+        .sort_values('assignee')
     )
 
     if totals.empty:

@@ -7,7 +7,7 @@ import pandas as pd
 
 def parse_label_issues(label: dict):
     label = deepcopy(label)
-    score = float(label["name"])
+    score = float(label["name"].lstrip('fixit-score-'))
     issues = label["issues"]["nodes"]
 
     if len(issues) == 0:
